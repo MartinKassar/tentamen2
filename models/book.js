@@ -2,15 +2,15 @@ mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
 
-        isbn: String,             //Type of place
-        title: String,            // The price
-        author: String,       //The monthly fee
-        price: Number,         //If bidding is active or not
+        isbn: String,             
+        title: String,            
+        author: String,       
+        price: Number,         
         sellerEmail: String,
         used: Boolean,
-        location: {             //Coordinates details
-            city: String,          //Latitude
-            street: String          //Longitude
+        location: {             
+            city: String,          
+            street: String          
         }
     
 });

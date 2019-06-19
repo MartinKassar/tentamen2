@@ -1,9 +1,8 @@
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: BookLibrary
-  description: |
-    books available for loan
+  title: Bargain Books
+  description: Books available for loan
   license:
     name: MIT
 servers:
@@ -11,17 +10,128 @@ servers:
 paths:
   /books:
     get:
-      summary: Lists all books
+      summary: Get all available books
       operationId: listBooks
       tags:
       - books
+      parameters:
+      - name: title
+        in: query
+        description: get the title of book
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Array of books
           content:
-            application/json:    
+            application/json:
               schema:
-                $ref: "#/components/schemas/ResponseBooks"
+                $ref: "#/components/schemas/ResponseBook"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create a new book listing
+      operationId: createBookListing
+      tags:
+      - books
+      requestBody:
+        description: list a book
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: book listed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseBook"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /books/{id}:
+    get:
+      summary: get an ID of book listing
+      operationId: getBookId
+      tags:
+      - books
+      parameters:
+      - name: id
+        in: path
+        description: bookId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returned the book with Id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseBook"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Edit a book
+      operationId: editBookListing
+      tags:
+      - books
+      parameters:
+      - name: id
+        in: path
+        description: Book listing id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The edited book listing
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Edited book listing
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete a book listing
+      operationId: deleteBookListing
+      tags:
+      - books
+      parameters:
+      - name: id
+        in: path
+        description: bookListingId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Book listing deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseBook"
         default:
           description: unexpected error
           content:
@@ -30,11 +140,29 @@ paths:
                 $ref: "#/components/schemas/Error"
 components:
   schemas:
-    Book: # A single book
+    Book:
       type: object
       properties:
-# Add properties for your books here   
-    ResponseBook: #Single book response including _id and __v
+        location:
+          type: object
+          properties:
+            city:
+              type: string
+            street:
+              type: string
+        isbn:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        price:
+          type: number
+        sellerEmail:
+          type: string
+        used:
+          type: boolean
+    ResponseBook:
       allOf:
       - $ref: "#/components/schemas/Book"
       - properties:
@@ -44,10 +172,8 @@ components:
           _id:
             type: string
             format: uuid
-    ResponseBooks: #list of books
-      type: array
-      items:
-        $ref: "#/components/schemas/ResponseBook"
+    #TODO: The second responseBook schema returned and error "duplicating mapping key, so I removed it"
+   
     Error:
       required:
         - error

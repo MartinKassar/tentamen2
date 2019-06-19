@@ -1,15 +1,6 @@
-/*
-get = (req, res, next) => {
-  req.models.Book.find().then((books) => {
-    return res.send(books);
-  }).catch((error) => next(error))
-}
-
-*/
-
 get = (req, res, next) => {
   var query;
-  if (req.query.kommun) {
+  if (req.query.title) {
       query = req.models.Book.findOne({ "title": req.query.title })
   }
   else {
@@ -20,6 +11,14 @@ get = (req, res, next) => {
       return res.send(book);
   }).catch((error) => next(error))
 }
+
+ getById = (req, res, next) => {
+   req.models.Book.findById(req.params.id)
+       .then(book => {
+           return res.send(book);
+       })
+       .catch(error => next(error));
+ };
 
 post = (req, res, next) => {
   req.models.Book.create({
@@ -92,5 +91,6 @@ module.exports = {
   post,
   deleteById,
   put,
+  getById
 }
 
