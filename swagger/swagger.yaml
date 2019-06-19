@@ -5,6 +5,10 @@ info:
   description: Books available for loan
   license:
     name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Martin Kassar
+    email: martin.kassar@hotmail.com
 servers:
 - url: http://localhost:3000
 paths:
