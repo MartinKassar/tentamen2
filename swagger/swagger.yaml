@@ -27,7 +27,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseBook"
+                $ref: "#/components/schemas/Book"
         default:
           description: unexpected error
           content:
@@ -78,7 +78,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseBook"
+                $ref: "#/components/schemas/Book"
         default:
           description: unexpected error
           content:
@@ -172,7 +172,10 @@ components:
           _id:
             type: string
             format: uuid
-    #TODO: The second responseBook schema returned and error "duplicating mapping key, so I removed it"
+    ResponseBooks: 
+      type: array
+      items:
+        $ref: "#/components/schemas/ResponseBook"
    
     Error:
       required:
